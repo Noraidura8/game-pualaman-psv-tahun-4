@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kembara Pualaman Seni - PSV Tahun 4</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            min-height: 100vh;
+            user-select: none;
+        }
+        .font-game {
+            font-family: 'Fredoka One', cursive;
+        }
+        .marbled-bg {
+            background: radial-gradient(circle at 20% 20%, rgba(255, 107, 107, 0.4) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 30%, rgba(78, 205, 196, 0.4) 0%, transparent 40%),
+                        radial-gradient(circle at 40% 80%, rgba(255, 230, 109, 0.4) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 70%, rgba(168, 85, 247, 0.4) 0%, transparent 40%);
+            background-color: #ffffff;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            border: 4px solid #ffffff;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+        .btn-bounce {
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .btn-bounce:hover {
+            transform: scale(1.03) translateY(-3px);
+        }
+        .btn-bounce:active {
+            transform: scale(0.97) translateY(1px);
+        }
+        /* Custom Keyframe Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+        }
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+        @keyframes pulse-heart {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        .animate-heart {
+            animation: pulse-heart 0.8s infinite;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-3xl glass-card rounded-3xl p-6 md:p-8 relative overflow-hidden marbled-bg min-h-[550px] flex flex-col justify-between">
+        
+        <!-- Background Decorative Bubbles -->
+        <div class="absolute -top-10 -left-10 w-32 h-32 bg-pink-300 rounded-full blur-xl opacity-50 pointer-events-none"></div>
+        <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-purple-300 rounded-full blur-xl opacity-50 pointer-events-none"></div>
+
+        <!-- ================= 1. SKRIN MULA ================= -->
+        <div id="start-screen" class="flex flex-col items-center justify-center my-auto text-center space-y-6">
+            <div class="animate-float">
+                <span class="inline-block bg-yellow-300 text-yellow-900 font-bold px-4 py-1.5 rounded-full text-sm mb-2 shadow">🎨 PSV Tahun 4 (M/S 72-73)</span>
+                <h1 class="text-4xl md:text-5xl font-game text-indigo-700 tracking-wide drop-shadow-sm">
+                    KEMBARA PUALAMAN
+                </h1>
+                <p class="text-gray-600 font-semibold mt-1">Uji Pengetahuan Seni Corak Tak Terancang!</p>
+            </div>
+
+            <!-- Illustration Badge -->
+            <div class="flex items-center justify-center space-x-3 bg-white/80 p-4 rounded-2xl shadow-inner border border-purple-100">
+                <div class="w-12 h-12 rounded-full bg-pink-500 flex items-center justify-center text-white text-2xl shadow"><i class="fa-solid fa-palette"></i></div>
+                <div class="w-12 h-12 rounded-full bg-cyan-400 flex items-center justify-center text-white text-2xl shadow"><i class="fa-solid fa-droplet"></i></div>
+                <div class="w-12 h-12 rounded-full bg-amber-400 flex items-center justify-center text-white text-2xl shadow"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+            </div>
+
+            <div class="w-full max-w-sm space-y-4">
+                <div class="text-left">
+                    <label for="player-name" class="block text-sm font-bold text-gray-700 ml-1 mb-1">
+                        <i class="fa-solid fa-user-astronaut text-indigo-500 mr-1"></i> Nama Murid:
+                    </label>
+                    <input type="text" id="player-name" placeholder="Masukkan nama kamu di sini..." 
+                           class="w-full px-5 py-3.5 rounded-2xl border-2 border-indigo-200 focus:border-indigo-500 focus:outline-none text-lg font-bold text-gray-800 shadow-sm transition">
+                </div>
+
+                <button onclick="startGame()" class="w-full btn-bounce bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-game text-xl py-4 rounded-2xl shadow-lg border-b-4 border-indigo-800 flex items-center justify-center space-x-2">
+                    <span>MULA PERMAINAN</span>
+                    <i class="fa-solid fa-play"></i>
+                </button>
+            </div>
+            
+            <div class="text-xs text-gray-500 bg-white/50 px-3 py-1 rounded-full">
+                💡 Mempunyai 10 soalan | 3 Nyawa ❤️ | Dengar audio soalan
+            </div>
+        </div>
+
+        <!-- ================= 2. SKRIN PERMAINAN (QUIZ) ================= -->
+        <div id="quiz-screen" class="hidden flex-col h-full justify-between space-y-4">
+            
+            <!-- Header Status Bar -->
+            <div class="flex items-center justify-between bg-white/90 p-3.5 rounded-2xl shadow-sm border border-indigo-50">
+                <!-- User Info -->
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-user text-sm"></i>
+                    </div>
+                    <span id="display-player-name" class="font-bold text-gray-700 text-sm md:text-base truncate max-w-[120px]">Murid</span>
+                </div>
+
+                <!-- Lives Indicator -->
+                <div class="flex items-center space-x-1 bg-red-50 px-3 py-1 rounded-full border border-red-100">
+                    <span class="text-xs font-bold text-red-500 mr-1">NYAWA:</span>
+                    <div id="lives-container" class="flex space-x-1 text-lg text-red-500">
+                        <i class="fa-solid fa-heart animate-heart"></i>
+                        <i class="fa-solid fa-heart animate-heart"></i>
+                        <i class="fa-solid fa-heart animate-heart"></i>
+                    </div>
+                </div>
+
+                <!-- Score Display -->
+                <div class="flex items-center space-x-1 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">
+                    <i class="fa-solid fa-star text-amber-500"></i>
+                    <span class="text-xs font-bold text-amber-700">SKOR:</span>
+                    <span id="score-display" class="font-game text-amber-600 text-lg">0</span>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-gray-200 h-3 rounded-full overflow-hidden">
+                <div id="progress-bar" class="bg-gradient-to-r from-teal-400 to-indigo-500 h-full w-0 transition-all duration-300"></div>
+            </div>
+
+            <!-- Question Box -->
+            <div class="bg-white p-5 md:p-6 rounded-2xl shadow-sm border border-purple-100 space-y-3">
+                <div class="flex justify-between items-center">
+                    <span id="question-number" class="text-xs font-bold uppercase tracking-wider text-purple-600 bg-purple-100 px-3 py-1 rounded-full">
+                        Soalan 1 / 10
+                    </span>
+                    <!-- Visual Icon Theme Tag -->
+                    <span id="question-tag" class="text-xs font-semibold text-gray-500">
+                        <i class="fa-solid fa-lightbulb text-yellow-500"></i> Teori Seni
+                    </span>
+                </div>
+
+                <h2 id="question-text" class="text-lg md:text-xl font-bold text-gray-800 leading-snug min-h-[56px] flex items-center">
+                    Soalan akan dipaparkan di sini...
+                </h2>
+
+                <!-- Optional Visual Banner inside Question Box -->
+                <div id="question-visual" class="hidden w-full h-28 rounded-xl bg-indigo-50 flex items-center justify-center overflow-hidden relative border">
+                    <!-- Dynamic visual icon / emoji placeholder -->
+                </div>
+            </div>
+
+            <!-- Options Grid -->
+            <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+                <!-- Buttons dynamically generated by JS -->
+            </div>
+
+            <!-- Hint / Feedback Bar -->
+            <div id="feedback-bar" class="h-8 text-center font-bold text-sm flex items-center justify-center rounded-xl transition-all">
+                <!-- Feedback message (Betul/Salah) -->
+            </div>
+        </div>
+
+        <!-- ================= 3. SKRIN TAMAT PERMAINAN ================= -->
+        <div id="end-screen" class="hidden flex-col items-center justify-center my-auto text-center space-y-5">
+            <div id="result-icon-container" class="w-24 h-24 rounded-full flex items-center justify-center text-5xl shadow-lg border-4 border-white animate-bounce">
+                🏆
+            </div>
+
+            <div>
+                <h1 id="result-title" class="text-3xl md:text-4xl font-game text-indigo-700">Tahniah!</h1>
+                <p id="result-subtitle" class="text-gray-600 font-semibold mt-1">Kamu telah menyelesaikan Kembara Pualaman!</p>
+            </div>
+
+            <!-- Result Card -->
+            <div class="bg-white/90 p-5 rounded-2xl shadow-md border border-purple-100 w-full max-w-sm space-y-3">
+                <div class="flex justify-between items-center border-b pb-2">
+                    <span class="text-gray-500 font-bold">Nama Murid:</span>
+                    <span id="end-player-name" class="font-bold text-indigo-600 text-lg">Pemain</span>
+                </div>
+                <div class="flex justify-between items-center border-b pb-2">
+                    <span class="text-gray-500 font-bold">Jumlah Markah:</span>
+                    <span id="end-score" class="font-game text-2xl text-amber-500">0</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-500 font-bold">Prestasi:</span>
+                    <span id="end-performance" class="font-bold text-emerald-600">Cemerlang!</span>
+                </div>
+            </div>
+
+            <!-- Encouragement Message -->
+            <p id="encouragement-text" class="text-sm font-semibold text-purple-800 bg-purple-50 p-3 rounded-xl border border-purple-200 max-w-md">
+                "Hebat! Kamu memahami teknik pualaman dengan sangat baik!"
+            </p>
+
+            <button onclick="restartGame()" class="btn-bounce bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-game text-lg px-8 py-3.5 rounded-2xl shadow-lg border-b-4 border-emerald-800 flex items-center space-x-2">
+                <i class="fa-solid fa-rotate-right"></i>
+                <span>MAIN SEMULA</span>
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        /* ================= AUDIO SYNTHESIZER (WEB AUDIO API) ================= */
+        // Dynamic Web Audio API sound generator so no external audio files are needed!
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new AudioContext();
+            }
+        }
+
+        // Play Correct Sound (Cheerful chime)
+        function playCorrectSFX() {
+            if (!audioCtx) return;
+            const now = audioCtx.currentTime;
+            
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(523.25, now); // C5
+            osc.frequency.exponentialRampToValueAtTime(659.25, now + 0.1); // E5
+            osc.frequency.exponentialRampToValueAtTime(783.99, now + 0.2); // G5
+            osc.frequency.exponentialRampToValueAtTime(1046.50, now + 0.3); // C6
+
+            gain.gain.setValueAtTime(0.3, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start(now);
+            osc.stop(now + 0.5);
+        }
+
+        // Play Wrong Sound (Soft buzz down)
+        function playWrongSFX() {
+            if (!audioCtx) return;
+            const now = audioCtx.currentTime;
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(220, now); // A3
+            osc.frequency.exponentialRampToValueAtTime(130.81, now + 0.3); // C3
+
+            gain.gain.setValueAtTime(0.3, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start(now);
+            osc.stop(now + 0.35);
+        }
+
+        /* ================= GAME QUESTIONS DATA ================= */
+        // Based on textbook pages 72 & 73
+        const questionsData = [
+            {
+                question: "Apakah maksud teknik Pualaman?",
+                options: [
+                    "Teknik menghasilkan corak secara tidak terancang",
+                    "Teknik melukis guna pensel warna sahaja",
+                    "Teknik menggunting kertas menjadi susunan geometri",
+                    "Teknik melembutkan liat di dalam air"
+                ],
+                answer: 0,
+                tag: "Konsep Pualaman",
+                icon: "fa-palette"
+            },
+            {
+                question: "Pualaman terhasil daripada proses pengasingan bahan berasaskan...",
+                options: [
+                    "Susu dan cuka",
+                    "Minyak dan air",
+                    "Tepung dan gula",
+                    "Sabun dan pencuci"
+                ],
+                answer: 1,
+                tag: "Sains Seni",
+                icon: "fa-droplet"
+            },
+            {
+                question: "Apakah fungsi penggunaan 'warna penggenap' (kontra) dalam pualaman?",
+                options: [
+                    "Menjadikan corak menjadi pudar",
+                    "Mewujudkan kesan kontra agar hasil lebih menarik",
+                    "Melarutkan cat minyak dengan cepat",
+                    "Menghilangkan bau cat"
+                ],
+                answer: 1,
+                tag: "Teori Warna",
+                icon: "fa-circle-half-stroke"
+            },
+            {
+                question: "Warna penggenap ialah kombinasi dua warna yang terletak _________ dalam roda warna.",
+                options: [
+                    "Bersebelahan",
+                    "Bertentangan",
+                    "Di tengah-tengah",
+                    "Di luar"
+                ],
+                answer: 1,
+                tag: "Roda Warna",
+                icon: "fa-arrows-rotate"
+            },
+            {
+                question: "Manakah antara berikut adalah pasangan bahan pualaman yang BETUL mengikut buku teks?",
+                options: [
+                    "Warna poster dan sabun",
+                    "Krim pencukur dan garam",
+                    "Pengilat kuku dan minyak masak",
+                    "Cat minyak dan gula"
+                ],
+                answer: 0,
+                tag: "Kombinasi Bahan",
+                icon: "fa-flask"
+            },
+            {
+                question: "Apakah bahan yang digabungkan bersama Krim Pencukur untuk pualaman?",
+                options: [
+                    "Pengilat kuku",
+                    "Cat minyak",
+                    "Pewarna makanan",
+                    "Sabun mandi"
+                ],
+                answer: 2,
+                tag: "Kombinasi Bahan",
+                icon: "fa-pump-soap"
+            },
+            {
+                question: "Kombinasi 'Pengilat Kuku' perlu dicampurkan dengan bahan apa untuk pualaman?",
+                options: [
+                    "Minyak Masak",
+                    "Air",
+                    "Sabun",
+                    "Tepung"
+                ],
+                answer: 1,
+                tag: "Kombinasi Bahan",
+                icon: "fa-bottle-droplet"
+            },
+            {
+                question: "Antara berikut, yang manakah permukaan bahan KERAJINAN / SOUVENIR yang boleh dihias dengan pualaman?",
+                options: [
+                    "Batu, Kaca, dan Cangkuk/Cangkerang",
+                    "Ais batu dan Daging",
+                    "Daun basah sahaja",
+                    "Air teh"
+                ],
+                answer: 0,
+                tag: "Aplikasi Permukaan",
+                icon: "fa-gem"
+            },
+            {
+                question: "Corak pualaman boleh dipindahkan ke atas barang kegunaan harian berikut, KECUALI...",
+                options: [
+                    "Kasut Getah / Clog",
+                    "Sarung Telefon Plastik",
+                    "Topi Fabrik",
+                    "Makanan Hotdog"
+                ],
+                answer: 3,
+                tag: "Aplikasi Permukaan",
+                icon: "fa-boxes-packing"
+            },
+            {
+                question: "Warna Tempera sesuai digabungkan dengan bahan apa dalam teknik pualaman?",
+                options: [
+                    "Minyak masak",
+                    "Sabun basuh",
+                    "Krim pencukur",
+                    "Pencuci cermin"
+                ],
+                answer: 0,
+                tag: "Kombinasi Bahan",
+                icon: "fa-jar"
+            }
+        ];
+
+        /* ================= GAME STATE VARIABLES ================= */
+        let playerName = "Murid";
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let lives = 3;
+        let isAnswering = false;
+
+        /* ================= FUNCTIONS ================= */
+
+        // Start Game
+        function startGame() {
+            const nameInput = document.getElementById('player-name').value.trim();
+            if (nameInput === "") {
+                alert("Sila masukkan nama kamu dahulu!");
+                return;
+            }
+
+            initAudio();
+            playerName = nameInput;
+            document.getElementById('display-player-name').innerText = playerName;
+
+            // Reset States
+            currentQuestionIndex = 0;
+            score = 0;
+            lives = 3;
+
+            // UI Switch
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('start-screen').classList.remove('flex');
+            
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            document.getElementById('quiz-screen').classList.add('flex');
+
+            updateLivesUI();
+            updateScoreUI();
+            loadQuestion();
+        }
+
+        // Render Question
+        function loadQuestion() {
+            isAnswering = true;
+            const q = questionsData[currentQuestionIndex];
+
+            // Progress Bar Update
+            const progressPercent = ((currentQuestionIndex) / questionsData.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+
+            // Clear Feedback
+            const feedbackBar = document.getElementById('feedback-bar');
+            feedbackBar.innerText = "";
+            feedbackBar.className = "h-8 text-center font-bold text-sm flex items-center justify-center rounded-xl transition-all";
+
+            // Set Texts
+            document.getElementById('question-number').innerText = `Soalan ${currentQuestionIndex + 1} / ${questionsData.length}`;
+            document.getElementById('question-tag').innerHTML = `<i class="fa-solid ${q.icon} text-indigo-500 mr-1"></i> ${q.tag}`;
+            document.getElementById('question-text').innerText = q.question;
+
+            // Options Container
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            const optionPrefixes = ['A', 'B', 'C', 'D'];
+            const optionColors = [
+                'hover:border-pink-400 hover:bg-pink-50',
+                'hover:border-cyan-400 hover:bg-cyan-50',
+                'hover:border-amber-400 hover:bg-amber-50',
+                'hover:border-purple-400 hover:bg-purple-50'
+            ];
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `btn-bounce w-full p-4 text-left font-bold text-gray-700 bg-white border-2 border-gray-200 rounded-2xl shadow-sm flex items-center space-x-3 transition-all ${optionColors[idx % 4]}`;
+                btn.onclick = () => selectAnswer(idx, btn);
+
+                btn.innerHTML = `
+                    <span class="w-8 h-8 rounded-xl bg-gray-100 text-gray-600 flex items-center justify-center font-game text-sm flex-shrink-0 border">
+                        ${optionPrefixes[idx]}
+                    </span>
+                    <span class="text-sm md:text-base leading-tight">${opt}</span>
+                `;
+
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        // Handle Answer Selection
+        function selectAnswer(selectedIndex, selectedBtn) {
+            if (!isAnswering) return;
+            isAnswering = false; // Prevent multiple clicks
+
+            const q = questionsData[currentQuestionIndex];
+            const allButtons = document.querySelectorAll('#options-container button');
+            const feedbackBar = document.getElementById('feedback-bar');
+
+            // Disable all buttons
+            allButtons.forEach(btn => btn.classList.remove('btn-bounce'));
+
+            if (selectedIndex === q.answer) {
+                // CORRECT ANSWER
+                playCorrectSFX();
+                score += 10;
+                updateScoreUI();
+
+                selectedBtn.classList.remove('border-gray-200', 'bg-white');
+                selectedBtn.classList.add('border-emerald-500', 'bg-emerald-50', 'text-emerald-800');
+                selectedBtn.querySelector('span').classList.add('bg-emerald-500', 'text-white');
+
+                feedbackBar.innerText = "✨ TEPAT SEKALI! (+10 Markah)";
+                feedbackBar.classList.add('bg-emerald-100', 'text-emerald-700');
+            } else {
+                // WRONG ANSWER
+                playWrongSFX();
+                lives--;
+                updateLivesUI();
+
+                selectedBtn.classList.remove('border-gray-200', 'bg-white');
+                selectedBtn.classList.add('border-rose-500', 'bg-rose-50', 'text-rose-800');
+                selectedBtn.querySelector('span').classList.add('bg-rose-500', 'text-white');
+
+                // Highlight Correct Answer
+                const correctBtn = allButtons[q.answer];
+                correctBtn.classList.remove('border-gray-200', 'bg-white');
+                correctBtn.classList.add('border-emerald-500', 'bg-emerald-50', 'text-emerald-800');
+
+                feedbackBar.innerText = "❌ JAWAPAN KURANG TEPAT!";
+                feedbackBar.classList.add('bg-rose-100', 'text-rose-700');
+            }
+
+            // Check if Lives Depleted or Next Question
+            setTimeout(() => {
+                if (lives <= 0) {
+                    endGame(false);
+                } else {
+                    currentQuestionIndex++;
+                    if (currentQuestionIndex < questionsData.length) {
+                        loadQuestion();
+                    } else {
+                        endGame(true);
+                    }
+                }
+            }, 1400);
+        }
+
+        // Update Lives Icons
+        function updateLivesUI() {
+            const container = document.getElementById('lives-container');
+            container.innerHTML = '';
+            for (let i = 0; i < 3; i++) {
+                const heart = document.createElement('i');
+                if (i < lives) {
+                    heart.className = 'fa-solid fa-heart text-red-500 animate-heart';
+                } else {
+                    heart.className = 'fa-regular fa-heart text-gray-300';
+                }
+                container.appendChild(heart);
+            }
+        }
+
+        // Update Score Text
+        function updateScoreUI() {
+            document.getElementById('score-display').innerText = score;
+        }
+
+        // End Game
+        function endGame(completed) {
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('flex');
+
+            document.getElementById('end-screen').classList.remove('hidden');
+            document.getElementById('end-screen').classList.add('flex');
+
+            document.getElementById('end-player-name').innerText = playerName;
+            document.getElementById('end-score').innerText = `${score} / 100`;
+
+            const iconContainer = document.getElementById('result-icon-container');
+            const resultTitle = document.getElementById('result-title');
+            const resultSubtitle = document.getElementById('result-subtitle');
+            const encouragement = document.getElementById('encouragement-text');
+            const performance = document.getElementById('end-performance');
+
+            if (score >= 80) {
+                iconContainer.innerHTML = '👑';
+                iconContainer.className = 'w-24 h-24 rounded-full flex items-center justify-center text-5xl shadow-lg border-4 border-white bg-amber-400 animate-bounce';
+                resultTitle.innerText = "SANGAT HEBAT!";
+                resultSubtitle.innerText = "Kamu pakar dalam Teknik Pualaman!";
+                performance.innerText = "Cemerlang (A+)";
+                performance.className = "font-bold text-amber-600";
+                encouragement.innerText = `Syabas ${playerName}! Kamu benar-benar menguasai topik pualaman dan bahasa seni visual dengan sangat baik! 🎨🌟`;
+            } else if (score >= 50) {
+                iconContainer.innerHTML = '👏';
+                iconContainer.className = 'w-24 h-24 rounded-full flex items-center justify-center text-5xl shadow-lg border-4 border-white bg-indigo-400 animate-bounce';
+                resultTitle.innerText = "SYABAS & TAHNIAH!";
+                resultSubtitle.innerText = "Usaha yang sangat baik!";
+                performance.innerText = "Baik";
+                performance.className = "font-bold text-indigo-600";
+                encouragement.innerText = `Bagus ${playerName}! Teruskan membaca muka surat 72 & 73 untuk menjadi lebih hebat lagi! 👍🏼`;
+            } else {
+                iconContainer.innerHTML = '💪';
+                iconContainer.className = 'w-24 h-24 rounded-full flex items-center justify-center text-5xl shadow-lg border-4 border-white bg-rose-400 animate-bounce';
+                resultTitle.innerText = "JANGAN PUTUS ASA!";
+                resultSubtitle.innerText = "Boleh cuba lagi untuk markah lebih tinggi!";
+                performance.innerText = "Perlu Tinjauan Semula";
+                performance.className = "font-bold text-rose-600";
+                encouragement.innerText = `Tidak mengapa ${playerName}, semak semula infografik pualaman dan cuba main sekali lagi ya! 😉`;
+            }
+        }
+
+        // Restart Game
+        function restartGame() {
+            document.getElementById('end-screen').classList.add('hidden');
+            document.getElementById('end-screen').classList.remove('flex');
+
+            document.getElementById('start-screen').classList.remove('hidden');
+            document.getElementById('start-screen').classList.add('flex');
+        }
+    </script>
+</body>
+</html>
